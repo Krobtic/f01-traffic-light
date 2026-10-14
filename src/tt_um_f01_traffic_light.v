@@ -22,8 +22,8 @@ module tt_um_f01_traffic_light (
         .uio_oe (uio_oe)
     );
 
-    // Gom tất cả tín hiệu đầu vào không dùng để triệt tiêu hoàn toàn floating nets
-    wire _unused = &{ena, ui_in, uio_in[7:1], 1'b0};
+    // Thêm (* keep *) và dùng XOR để Yosys không tự tối ưu bỏ dây đầu vào
+    (* keep *) wire _unused = ^ui_in ^ ^uio_in[7:1] ^ ena;
 
 endmodule
 

@@ -92,6 +92,7 @@ module fsm_traffic_light (
         if (night_mode) begin
             // Chế độ ban đêm: Nhấp nháy đèn Vàng {Red=0, Yellow=Blink, Green=0}
             uo_out[2:0] = {1'b0, night_blink, 1'b0}; // Đèn Hướng 1
+            uo_out[5:3] = {1'b0, night_blink, 1 me, 1'b0};
             uo_out[5:3] = {1'b0, night_blink, 1'b0}; // Đèn Hướng 2
         end else begin
             case (current_state)
@@ -119,8 +120,8 @@ module fsm_traffic_light (
         end
     end
 
-    // Triệt tiêu cảnh báo Verilator & loại bỏ hoàn toàn floating nets
-    wire _unused = &{ui_in, uio_in[7:1], 1'b0};
+    // Thêm (* keep *) để giữ kết nối đầu vào trong module con
+    (* keep *) wire _unused = ^ui_in ^ ^uio_in[7:1];
 
 endmodule
 
