@@ -22,7 +22,7 @@ module tt_um_f01_traffic_light (
         .uio_oe (uio_oe)
     );
 
-    // Triệt tiêu cảnh báo Verilator chuẩn Tiny Tapeout
+    // Triệt tiêu cảnh báo ena
     wire _unused = &{ena, 1'b0};
 
 endmodule

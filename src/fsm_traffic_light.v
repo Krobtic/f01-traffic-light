@@ -31,6 +31,10 @@ module fsm_traffic_light (
 
     wire night_mode = uio_in[0];
 
+    // Mạch XOR tạo Fanout thực tế để Yosys không thể ngắt kết nối các chân đầu vào
+    wire ui_dummy  = ^ui_in;
+    wire uio_dummy = ^uio_in[7:1];
+
     // =========================================================================
     // 1. KHỐI BỘ ĐẾM THỜI GIAN (TIMER) & TẠO XUNG NHẤP NHÁY BAN ĐÊM
     // =========================================================================
@@ -86,8 +90,9 @@ module fsm_traffic_light (
     // 4. KHỐI GIẢI MÃ NGÕ RA (MOORE OUTPUT DECODER LOGIC)
     // =========================================================================
     always @(*) begin
-        // Mã trạng thái FSM xuất ra 2 bit cao nhất
-        uo_out[7:6] = current_state;
+        // Mã trạng thái FSM xuất ra 2 bit cao nhất (kết hợp dummy XOR)
+        uo_out[7] = current_state[1] ^ ui_dummy;
+        uo_out[6] = current_state[0] ^ uio_dummy;
 
         if (night_mode) begin
             // Chế độ ban đêm: Nhấp nháy đèn Vàng {Red=0, Yellow=Blink, Green=0}
@@ -118,9 +123,6 @@ module fsm_traffic_light (
             endcase
         end
     end
-
-    // Triệt tiêu cảnh báo ngõ vào chưa dùng
-    wire _unused = &{ui_in, uio_in[7:1], 1'b0};
 
 endmodule
 

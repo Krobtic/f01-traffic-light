@@ -4,8 +4,9 @@
     "dir::tt_um_f01_traffic_light.v",
     "dir::fsm_traffic_light.v"
   ],
-  "CLOCK_PERIOD": 100,
   "CLOCK_PORT": "clk",
   "CLOCK_NET": "clk",
-  "PL_TARGET_DENSITY": 0.30
+  "FP_SIZING": "absolute",
+  "DIE_AREA": "0 0 161.29 111.52",
+  "CORE_AREA": "6 6 155.29 105.52"
 }
