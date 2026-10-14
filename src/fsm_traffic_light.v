@@ -4,10 +4,10 @@ module fsm_traffic_light (
     input  wire       clk,        // Xung clock hệ thống (1Hz / 1s)
     input  wire       rst_n,      // Reset bất đồng bộ mức thấp (0)
     input  wire [7:0] uio_in,     // uio_in[0] = Chế độ ban đêm (1: Đêm, 0: Ngày)
-    input  wire [7:0] ui_in,      // Ngõ vào phụ (Không sử dụng, đặt 8'h00)
+    input  wire [7:0] ui_in,      // Ngõ vào phụ (Không sử dụng)
     output reg  [7:0] uo_out,     // uo_out[2:0]=H1, uo_out[5:3]=H2, uo_out[7:6]=State
-    output wire [7:0] uio_out,    // Ngõ ra phụ (Không sử dụng, đặt 8'h00)
-    output wire [7:0] uio_oe      // Điều khiển chiều I/O (Đặt 8'h00 = chọn Input)
+    output wire [7:0] uio_out,    // Ngõ ra phụ
+    output wire [7:0] uio_oe      // Điều khiển chiều I/O
 );
 
     // Vô hiệu hóa các chân I/O không dùng
@@ -119,8 +119,8 @@ module fsm_traffic_light (
         end
     end
 
-    // Thêm (* keep *) để giữ kết nối đầu vào trong module con
-    (* keep *) wire _unused = ^ui_in ^ ^uio_in[7:1];
+    // Giữ kết nối ngõ vào chưa dùng trong module con
+    (* keep *) wire _unused = &{ui_in, uio_in[7:1]};
 
 endmodule
 
