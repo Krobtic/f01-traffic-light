@@ -119,8 +119,8 @@ module fsm_traffic_light (
         end
     end
 
-    // Giữ kết nối ngõ vào chưa dùng trong module con
-    (* keep *) wire _unused = &{ui_in, uio_in[7:1]};
+    // Xử lý tín hiệu đầu vào chưa dùng ở module FSM
+    wire _unused = &{ui_in, uio_in[7:1], 1'b0};
 
 endmodule
 

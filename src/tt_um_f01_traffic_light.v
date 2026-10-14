@@ -22,8 +22,8 @@ module tt_um_f01_traffic_light (
         .uio_oe (uio_oe)
     );
 
-    // Giữ kết nối vật lý cho tất cả chân ngõ vào chưa dùng (không có hằng số 1'b0)
-    (* keep *) wire _unused = &{ena, ui_in, uio_in[7:1]};
+    // Xử lý tín hiệu ena không dùng ở cấp Top Wrapper
+    wire _unused = &{ena, 1'b0};
 
 endmodule
 

@@ -3,5 +3,8 @@
   "VERILOG_FILES": [
     "dir::tt_um_f01_traffic_light.v",
     "dir::fsm_traffic_light.v"
-  ]
+  ],
+  "CLOCK_PERIOD": 100,
+  "CLOCK_PORT": "clk",
+  "CLOCK_NET": "clk"
 }
