@@ -13,4 +13,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build GDS
-        uses: tinytapeout/tt-gds-action@v3
+        uses: tinytapeout/tt-gds-action@main
