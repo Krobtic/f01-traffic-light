@@ -10,7 +10,7 @@ project:
   # Tên Top Module Wrapper
   top_module:  "tt_um_f01_traffic_light"
 
-  # Danh sách tên file trong thư mục src
+  # Danh sách file mã nguồn RTL trong thư mục src/
   source_files:
     - "tt_um_f01_traffic_light.v"
     - "fsm_traffic_light.v"
@@ -19,31 +19,32 @@ project:
   how_it_works: "A 4-state Moore FSM controlling 2-direction traffic lights with 10s Green, 3s Yellow, and Night Mode blink."
   how_to_test:  "Set rst_n high, apply clk. Toggle uio_in[0] for night mode."
 
-# Sơ đồ gán chân I/O
+# Sơ đồ gán chân I/O chuẩn định dạng Tiny Tapeout (dạng danh sách 8 chân)
 pinout:
-  ui[0]: "Unused"
-  ui[1]: "Unused"
-  ui[2]: "Unused"
-  ui[3]: "Unused"
-  ui[4]: "Unused"
-  ui[5]: "Unused"
-  ui[6]: "Unused"
-  ui[7]: "Unused"
-
-  uo[0]: "H1 Green LED"
-  uo[1]: "H1 Yellow LED"
-  uo[2]: "H1 Red LED"
-  uo[3]: "H2 Green LED"
-  uo[4]: "H2 Yellow LED"
-  uo[5]: "H2 Red LED"
-  uo[6]: "Unused"
-  uo[7]: "Unused"
-
-  uio[0]: "Night Mode switch (1=Night, 0=Day)"
-  uio[1]: "Unused"
-  uio[2]: "Unused"
-  uio[3]: "Unused"
-  uio[4]: "Unused"
-  uio[5]: "Unused"
-  uio[6]: "Unused"
-  uio[7]: "Unused"
+  ui:
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+  uo:
+    - "H1 Green LED"
+    - "H1 Yellow LED"
+    - "H1 Red LED"
+    - "H2 Green LED"
+    - "H2 Yellow LED"
+    - "H2 Red LED"
+    - "Unused"
+    - "Unused"
+  uio:
+    - "Night Mode switch (1=Night, 0=Day)"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
+    - "Unused"
