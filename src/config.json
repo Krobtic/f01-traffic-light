@@ -5,5 +5,8 @@
     "dir::fsm_traffic_light.v"
   ],
   "CLOCK_PERIOD": 100,
-  "CLOCK_PORT": "clk"
+  "CLOCK_PORT": "clk",
+  "CLOCK_NET": "clk",
+  "PL_TARGET_DENSITY": 0.45,
+  "SYNTH_STRATEGY": "AREA 0"
 }
