@@ -6,13 +6,20 @@ project:
   language:     "Verilog"
   clock_hz:     10000000
 
+  # Kích thước ô chip (Bắt buộc)
+  tiles:        "1x1"
+
   # Tên Top Module Wrapper
   top_module:  "tt_um_f01_traffic_light"
 
-  # Danh sách file mã nguồn RTL
+  # Danh sách file mã nguồn RTL (Nằm trong thư mục src/)
   source_files:
     - "tt_um_f01_traffic_light.v"
     - "fsm_traffic_light.v"
+
+  # Mô tả nguyên lý và cách test (Bắt buộc đối với Tiny Tapeout)
+  how_it_works: "A 4-state Moore FSM controlling 2-direction traffic lights with 10s Green, 3s Yellow, and Night Mode blink."
+  how_to_test:  "Set rst_n high, apply clk. Toggle uio_in[0] for night mode."
 
 # Sơ đồ gán chân I/O
 pinout:
@@ -42,4 +49,3 @@ pinout:
   uio[5]: "Unused"
   uio[6]: "Unused"
   uio[7]: "Unused"
-  
