@@ -119,7 +119,7 @@ module fsm_traffic_light (
         end
     end
 
-    // Xử lý tín hiệu đầu vào chưa dùng ở module FSM
+    // Triệt tiêu cảnh báo ngõ vào chưa dùng
     wire _unused = &{ui_in, uio_in[7:1], 1'b0};
 
 endmodule

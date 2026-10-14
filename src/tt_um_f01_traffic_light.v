@@ -22,7 +22,7 @@ module tt_um_f01_traffic_light (
         .uio_oe (uio_oe)
     );
 
-    // Xử lý tín hiệu ena không dùng ở cấp Top Wrapper
+    // Triệt tiêu cảnh báo Verilator chuẩn Tiny Tapeout
     wire _unused = &{ena, 1'b0};
 
 endmodule
