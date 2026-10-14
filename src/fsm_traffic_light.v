@@ -1,3 +1,5 @@
+`default_nettype none
+
 module fsm_traffic_light (
     input  wire       clk,        // Xung clock hệ thống (1Hz / 1s)
     input  wire       rst_n,      // Reset bất đồng bộ mức thấp (0)
@@ -117,4 +119,9 @@ module fsm_traffic_light (
         end
     end
 
+    // Triệt tiêu cảnh báo Verilator & loại bỏ hoàn toàn floating nets
+    wire _unused = &{ui_in, uio_in[7:1], 1'b0};
+
 endmodule
+
+`default_nettype wire
