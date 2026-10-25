@@ -30,7 +30,7 @@ jobs:
       - name: Bien dich va chay testbench
         run: |
           shopt -s globstar nullglob
-          FILES=(src/*.v src/*.sv 04_IMPLEMENTATION/rtl/*.sv 04_IMPLEMENTATION/rtl/*.v 05_VERIFICATION/testbench/*.sv 05_VERIFICATION/testbench/*.v)
+          FILES=(src/*.v src/*.sv 05_VERIFICATION/testbench/*.sv 05_VERIFICATION/testbench/*.v)
           iverilog -g2012 -o sim.vvp "${FILES[@]}"
           vvp sim.vvp | tee simulation.log
 
