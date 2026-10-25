@@ -1,0 +1,4 @@
+
+16. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\f01_traffic_fsm_explicit.\uo_out' from process `\f01_traffic_fsm_explicit.$proc$/home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:51$17'.
+No latch inferred for signal `\f01_traffic_fsm_explicit.\next' from process `\f01_traffic_fsm_explicit.$proc$/home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:20$1'.

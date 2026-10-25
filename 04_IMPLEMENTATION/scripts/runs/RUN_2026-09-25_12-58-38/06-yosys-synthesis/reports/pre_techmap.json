@@ -1,0 +1,59 @@
+{
+   "creator": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+   "invocation": "stat -json -liberty /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/scripts/runs/RUN_2026-09-25_12-58-38/tmp/8e695d7c709348bda32dbbee485a15bf.lib ",
+   "modules": {
+      "\\f01_traffic_fsm_explicit": {
+         "num_wires":         51,
+         "num_wire_bits":     60,
+         "num_pub_wires":     9,
+         "num_pub_wire_bits": 18,
+         "num_ports":         5,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         56,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 19,
+            "$_AND_": 3,
+            "$_MUX_": 6,
+            "$_NAND_": 2,
+            "$_NOR_": 1,
+            "$_NOT_": 7,
+            "$_ORNOT_": 1,
+            "$_OR_": 8,
+            "$_SDFFE_PN0P_": 6,
+            "$_XNOR_": 1,
+            "$_XOR_": 2
+         }
+      }
+   },
+      "design": {
+         "num_wires":         51,
+         "num_wire_bits":     60,
+         "num_pub_wires":     9,
+         "num_pub_wire_bits": 18,
+         "num_ports":         5,
+         "num_port_bits":     12,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         56,
+         "num_submodules":       0,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 19,
+            "$_AND_": 3,
+            "$_MUX_": 6,
+            "$_NAND_": 2,
+            "$_NOR_": 1,
+            "$_NOT_": 7,
+            "$_ORNOT_": 1,
+            "$_OR_": 8,
+            "$_SDFFE_PN0P_": 6,
+            "$_XNOR_": 1,
+            "$_XOR_": 2
+         }
+      }
+}
+

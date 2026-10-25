@@ -1,0 +1,5 @@
+F01 reference model PASS
+Normal FSM states: ['NS_GREEN', 'NS_YELLOW', 'EW_GREEN', 'EW_YELLOW']
+Minimum binary state width: 2
+Night flashing implemented as a mode/output overlay, not a fifth state.
+Safety property holds for all normal and night output conditions.

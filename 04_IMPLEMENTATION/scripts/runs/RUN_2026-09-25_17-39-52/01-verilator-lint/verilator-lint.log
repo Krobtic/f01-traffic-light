@@ -1,0 +1,29 @@
+%Warning-WIDTHEXPAND: /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:24:30: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pc' generates 2 bits.
+                                                                                                                                                                        : ... note: In instance 'f01_traffic_fsm_explicit'
+   24 |                 S_NS_G: if(pc==PHASE_TICKS-1) next=S_NS_Y;
+      |                              ^~
+                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.044
+                      ... Use "/* verilator lint_off WIDTHEXPAND */" and lint_on around source to disable this message.
+%Warning-WIDTHEXPAND: /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:25:30: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pc' generates 2 bits.
+                                                                                                                                                                        : ... note: In instance 'f01_traffic_fsm_explicit'
+   25 |                 S_NS_Y: if(pc==PHASE_TICKS-1) next=S_EW_G;
+      |                              ^~
+%Warning-WIDTHEXPAND: /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:26:30: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pc' generates 2 bits.
+                                                                                                                                                                        : ... note: In instance 'f01_traffic_fsm_explicit'
+   26 |                 S_EW_G: if(pc==PHASE_TICKS-1) next=S_EW_Y;
+      |                              ^~
+%Warning-WIDTHEXPAND: /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:27:30: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pc' generates 2 bits.
+                                                                                                                                                                        : ... note: In instance 'f01_traffic_fsm_explicit'
+   27 |                 S_EW_Y: if(pc==PHASE_TICKS-1) next=S_NS_G;
+      |                              ^~
+%Warning-WIDTHEXPAND: /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:40:22: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'nc' generates 1 bits.
+                                                                                                                                                                        : ... note: In instance 'f01_traffic_fsm_explicit'
+   40 |                 if(nc==NIGHT_TICKS-1) begin
+      |                      ^~
+%Warning-WIDTHEXPAND: /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/rtl/f01_traffic_fsm_explicit.sv:46:41: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pc' generates 2 bits.
+                                                                                                                                                                        : ... note: In instance 'f01_traffic_fsm_explicit'
+   46 |                 pc <= (state!=next || pc==PHASE_TICKS-1)?'0:pc+1'b1;
+      |                                         ^~
+- V e r i l a t i o n   R e p o r t: Verilator 5.044 2026-01-01 rev v5.040
+- Verilator: Built from 0.705 MB sources in 449 modules, into 0.023 MB in 3 C++ files needing 0.000 MB
+- Verilator: Walltime 0.034 s (elab=0.009, cvt=0.002, bld=0.000); cpu 0.032 s on 1 threads; alloced 28.215 MB

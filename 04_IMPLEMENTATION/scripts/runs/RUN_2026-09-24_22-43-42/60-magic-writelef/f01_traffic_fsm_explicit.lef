@@ -1,0 +1,162 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO f01_traffic_fsm_explicit
+  CLASS BLOCK ;
+  FOREIGN f01_traffic_fsm_explicit ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 40.315 BY 51.035 ;
+  PIN VGND
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER met4 ;
+        RECT 24.340 10.640 25.940 38.320 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 5.520 30.030 34.500 31.630 ;
+    END
+  END VGND
+  PIN VPWR
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER met4 ;
+        RECT 21.040 10.640 22.640 38.320 ;
+    END
+    PORT
+      LAYER met5 ;
+        RECT 5.520 26.730 34.500 28.330 ;
+    END
+  END VPWR
+  PIN clk
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.852000 ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 32.680 0.600 33.280 ;
+    END
+  END clk
+  PIN ena
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.213000 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 16.360 40.315 16.960 ;
+    END
+  END ena
+  PIN night_mode
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.213000 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 17.720 40.315 18.320 ;
+    END
+  END night_mode
+  PIN rst_n
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.213000 ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 31.320 0.600 31.920 ;
+    END
+  END rst_n
+  PIN uo_out[0]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 34.040 40.315 34.640 ;
+    END
+  END uo_out[0]
+  PIN uo_out[1]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 25.880 40.315 26.480 ;
+    END
+  END uo_out[1]
+  PIN uo_out[2]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 27.240 40.315 27.840 ;
+    END
+  END uo_out[2]
+  PIN uo_out[3]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 29.960 40.315 30.560 ;
+    END
+  END uo_out[3]
+  PIN uo_out[4]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 28.600 40.315 29.200 ;
+    END
+  END uo_out[4]
+  PIN uo_out[5]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 31.320 40.315 31.920 ;
+    END
+  END uo_out[5]
+  PIN uo_out[6]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 0.000 29.960 0.600 30.560 ;
+    END
+  END uo_out[6]
+  PIN uo_out[7]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.702900 ;
+    PORT
+      LAYER met3 ;
+        RECT 39.715 32.680 40.315 33.280 ;
+    END
+  END uo_out[7]
+  OBS
+      LAYER nwell ;
+        RECT 5.330 10.795 34.690 38.165 ;
+      LAYER li1 ;
+        RECT 5.520 10.795 34.500 38.165 ;
+      LAYER met1 ;
+        RECT 3.750 10.240 34.500 38.320 ;
+      LAYER met2 ;
+        RECT 3.770 10.210 33.490 38.265 ;
+      LAYER met3 ;
+        RECT 0.600 35.040 39.715 38.245 ;
+        RECT 0.600 33.680 39.315 35.040 ;
+        RECT 1.000 29.560 39.315 33.680 ;
+        RECT 0.600 25.480 39.315 29.560 ;
+        RECT 0.600 18.720 39.715 25.480 ;
+        RECT 0.600 15.960 39.315 18.720 ;
+        RECT 0.600 10.715 39.715 15.960 ;
+  END
+END f01_traffic_fsm_explicit
+END LIBRARY
+

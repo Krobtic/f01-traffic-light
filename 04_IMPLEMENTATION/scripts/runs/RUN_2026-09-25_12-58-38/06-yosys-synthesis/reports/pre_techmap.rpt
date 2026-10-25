@@ -1,0 +1,37 @@
+117. Printing statistics.
+
+=== f01_traffic_fsm_explicit ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       51 wires
+       60 wire bits
+        9 public wires
+       18 public wire bits
+        5 ports
+       12 port bits
+       56 cells
+       19   $_ANDNOT_
+        3   $_AND_
+        6   $_MUX_
+        2   $_NAND_
+        1   $_NOR_
+        7   $_NOT_
+        1   $_ORNOT_
+        8   $_OR_
+        6   $_SDFFE_PN0P_
+        1   $_XNOR_
+        2   $_XOR_
+
+   Area for cell type $_ANDNOT_ is unknown!
+   Area for cell type $_AND_ is unknown!
+   Area for cell type $_MUX_ is unknown!
+   Area for cell type $_NAND_ is unknown!
+   Area for cell type $_NOR_ is unknown!
+   Area for cell type $_NOT_ is unknown!
+   Area for cell type $_ORNOT_ is unknown!
+   Area for cell type $_OR_ is unknown!
+   Area for cell type $_SDFFE_PN0P_ is unknown!
+   Area for cell type $_XNOR_ is unknown!
+   Area for cell type $_XOR_ is unknown!
+

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F01 — FSM đèn giao thông hai chiều có đèn vàng · Ghi chú thực hiện</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#1a1d21; --muted:#5c6570; --line:#e3e7eb;
+  --accent:#1f5fa9; --accent-soft:#eef4fb; --code-bg:#f5f7f9;
+  --ok:#137a4d; --ok-bg:#e8f6ee; --warn:#8a5a00; --warn-bg:#fdf4e2;
+  --bad:#a52020; --bad-bg:#fceded; --open:#7a5ba8; --open-bg:#f3eefa;
+  --maxw:960px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15181c; --fg:#e6e9ec; --muted:#98a2ad; --line:#2a2f36;
+    --accent:#6fa8e0; --accent-soft:#1c2733; --code-bg:#1b1f24;
+    --ok:#5cc08d; --ok-bg:#16291f; --warn:#d8a54a; --warn-bg:#2a2314;
+    --bad:#e88b8b; --bad-bg:#2b1a1a; --open:#b79ad6; --open-bg:#241d2e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15181c; --fg:#e6e9ec; --muted:#98a2ad; --line:#2a2f36;
+  --accent:#6fa8e0; --accent-soft:#1c2733; --code-bg:#1b1f24;
+  --ok:#5cc08d; --ok-bg:#16291f; --warn:#d8a54a; --warn-bg:#2a2314;
+  --bad:#e88b8b; --bad-bg:#2b1a1a; --open:#b79ad6; --open-bg:#241d2e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px 96px}
+header.doc{
+  border-bottom:1px solid var(--line); margin-bottom:28px; padding:36px 0 22px;
+}
+header.doc .eyebrow{
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; margin-bottom:10px;
+}
+header.doc h1{font-size:clamp(24px,4.4vw,34px); line-height:1.25; margin:0 0 14px}
+.badges{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px}
+.badge{
+  font-size:12.5px; padding:3px 10px; border-radius:999px;
+  border:1px solid var(--line); color:var(--muted); background:var(--accent-soft);
+  white-space:nowrap;
+}
+.badge.ok{color:var(--ok); background:var(--ok-bg); border-color:transparent}
+.badge.warn{color:var(--warn); background:var(--warn-bg); border-color:transparent}
+.badge.bad{color:var(--bad); background:var(--bad-bg); border-color:transparent}
+.badge.open{color:var(--open); background:var(--open-bg); border-color:transparent}
+nav.toc{
+  border:1px solid var(--line); border-radius:10px; padding:16px 20px;
+  margin:0 0 32px; background:var(--accent-soft);
+}
+nav.toc p{margin:0 0 8px; font-weight:700; font-size:13px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted)}
+nav.toc ul{margin:0; padding-left:20px}
+nav.toc li{margin:3px 0}
+nav.toc a{color:var(--fg); text-decoration:none}
+nav.toc a:hover{color:var(--accent); text-decoration:underline}
+nav.toc ul ul{padding-left:18px; font-size:14.5px}
+h2{font-size:22px; margin:40px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--line)}
+h3{font-size:18px; margin:28px 0 8px}
+h4{font-size:16px; margin:22px 0 6px; color:var(--muted)}
+p{margin:12px 0}
+a{color:var(--accent)}
+ul,ol{padding-left:24px}
+li{margin:4px 0}
+code{
+  font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  font-size:.9em; background:var(--code-bg); padding:1.5px 5px; border-radius:4px;
+}
+pre{
+  background:var(--code-bg); border:1px solid var(--line); border-radius:8px;
+  padding:14px 16px; overflow-x:auto; line-height:1.55; font-size:13.5px;
+}
+pre code{background:none; padding:0; font-size:inherit}
+blockquote{
+  margin:16px 0; padding:2px 18px; border-left:3px solid var(--accent);
+  background:var(--accent-soft); border-radius:0 8px 8px 0; color:var(--fg);
+}
+blockquote p{margin:10px 0}
+.tablewrap{overflow-x:auto; margin:16px 0; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:420px}
+th,td{border:1px solid var(--line); padding:7px 11px; text-align:left; vertical-align:top}
+th{background:var(--accent-soft); font-weight:650; white-space:nowrap}
+tbody tr:nth-child(even) td{background:color-mix(in srgb, var(--code-bg) 55%, transparent)}
+hr{border:0; border-top:1px solid var(--line); margin:34px 0}
+footer.doc{
+  margin-top:56px; padding-top:18px; border-top:1px solid var(--line);
+  color:var(--muted); font-size:13.5px;
+}
+.themebtn{
+  position:fixed; right:14px; bottom:14px; z-index:10;
+  border:1px solid var(--line); background:var(--bg); color:var(--muted);
+  border-radius:999px; padding:8px 14px; font-size:13px; cursor:pointer;
+}
+.themebtn:hover{color:var(--fg)}
+@media (max-width:640px){
+  .wrap{padding:0 16px 72px}
+  header.doc{padding:26px 0 18px}
+  nav.toc{padding:14px 16px}
+}
+@media print{
+  .themebtn{display:none}
+  nav.toc{break-inside:avoid}
+  pre,table,blockquote{break-inside:avoid}
+  body{font-size:11pt}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="doc">
+  <div class="eyebrow">RTL2GDS · Đề F01 · Ghi chú thực hiện</div>
+  <h1>F01 — FSM đèn giao thông hai chiều có đèn vàng · Ghi chú thực hiện</h1>
+  <div class="badges"><span class="badge ">F · Máy trạng thái hữu hạn (FSM)</span><span class="badge ">Độ khó: Trung bình (nhẹ)</span><span class="badge ">Loại mạch: Tuần tự</span><span class="badge ok">Mô phỏng: PASS</span><span class="badge ">Tổng hợp: 32 cell · 6 FF</span><span class="badge ">Đường tới hạn: 1,18 ns</span><span class="badge warn">Physical design: CHƯA CHẠY</span></div>
+</header>
+<nav class="toc"><p>Mục lục</p><ul><li><a href="#1-bai-toan-nay-thuc-chat-la-gi">1. Bài toán này thực chất là gì</a></li><li><a href="#2-ban-chat-ky-thuat-co-che-hoat-dong">2. Bản chất kỹ thuật — cơ chế hoạt động</a></li><li><a href="#3-doc-ma-nguon-rtl-lam-gi-tung-dong-quan-trong">3. Đọc mã nguồn: RTL làm gì, từng dòng quan trọng</a></li><li><a href="#4-vi-sao-chon-kien-truc-nay">4. Vì sao chọn kiến trúc này</a></li><li><a href="#5-cach-thuc-hien-lo-trinh-8-buoc-tu-dac-ta-toi-gdsii">5. Cách thực hiện — lộ trình 8 bước từ đặc tả tới GDSII</a></li><li><a href="#6-so-lieu-that-da-do-duoc-va-cach-doc-chung">6. Số liệu thật đã đo được và cách đọc chúng</a></li><li><a href="#7-tra-loi-cac-cau-hoi-ky-thuat-cua-charter-muc-2">7. Trả lời các câu hỏi kỹ thuật của Charter (mục 2)</a></li><li><a href="#8-tra-loi-cau-phan-tich-rieng-charter-muc-9">8. Trả lời câu phân tích riêng (Charter mục 9)</a></li><li><a href="#9-nhung-cho-sinh-vien-hay-sai-va-cach-phat-hien">9. Những chỗ sinh viên hay sai và cách phát hiện</a></li><li><a href="#10-cau-hoi-mentor-nen-dat-khi-bao-ve">10. Câu hỏi mentor nên đặt khi bảo vệ</a></li><li><a href="#11-gioi-han-da-chung-minh-duoc-gi-chua-chung-minh-duoc-gi">11. Giới hạn: đã chứng minh được gì, chưa chứng minh được gì</a></li></ul></nav>
+<main>
+<hr>
+<h2 id="1-bai-toan-nay-thuc-chat-la-gi">1. Bài toán này thực chất là gì</h2>
+<p>Đèn giao thông là bài tập FSM kinh điển, và chính vì kinh điển mà nó dễ bị làm hời hợt:
+vẽ bốn vòng tròn, nối bốn mũi tên, viết <code>case</code>, xong. Đề F01 được đặt ra để ép đi sâu hơn
+ở ba điểm mà bài tập giáo khoa thường bỏ qua.</p>
+<p><strong>Điểm thứ nhất — có một yêu cầu AN TOÀN trộn lẫn giữa các yêu cầu chức năng.</strong> Charter
+mục 2 câu 1 hỏi thẳng: <em>"Bằng chứng nào chứng minh KHÔNG BAO GIỜ có hai hướng cùng xanh —
+đây là yêu cầu an toàn, không phải yêu cầu chức năng?"</em> Chữ "không bao giờ" đòi một loại
+bằng chứng khác hẳn. Mô phỏng chỉ nói "trong 26 chu kỳ đã chạy thì không xảy ra". Yêu cầu
+an toàn cần chứng minh <strong>vét cạn</strong>.</p>
+<p><strong>Điểm thứ hai — chế độ đêm buộc phải chọn kiến trúc.</strong> Nhấp nháy vàng có thể làm bằng hai
+cách: thêm trạng thái, hoặc phủ lên đầu ra. Hai cách cho hai loại máy khác nhau (Moore và
+Mealy), hai số flip-flop khác nhau, và hai hồ sơ rủi ro khác nhau. Đây là quyết định phải
+ra <strong>ở mức sơ đồ</strong>, trước khi viết code — đúng điều Charter mục 10 cảnh báo.</p>
+<p><strong>Điểm thứ ba — Charter mục 9 buộc đối chiếu ⌈log₂(số trạng thái)⌉ với số flip-flop thật
+trong netlist</strong>, và tìm hiểu vì sao công cụ chọn như vậy. Câu trả lời cho F01 hoá ra thú
+vị hơn mong đợi (§8).</p>
+<h2 id="2-ban-chat-ky-thuat-co-che-hoat-dong">2. Bản chất kỹ thuật — cơ chế hoạt động</h2>
+<p>F01 là một <strong>FSMD tối giản</strong>: một FSM 4 trạng thái cộng một datapath đếm thời gian, nối
+với nhau bằng đúng <strong>một dây</strong> — tín hiệu <code>tick</code>.</p>
+<p>Cơ chế cốt lõi nằm ở chỗ <strong>FSM không tự đếm thời gian</strong>. Nó chỉ biết "đã tới lúc đổi pha
+chưa?" qua một bit. Việc "bao lâu là đủ" hoàn toàn thuộc về bộ đếm <code>pc</code>. Sự tách bạch này
+là lý do đồ thị trạng thái chỉ có 4 đỉnh và 8 cạnh — nếu trộn thời gian vào trạng thái,
+đồ thị sẽ phình ra <code>4 × PHASE_TICKS</code> đỉnh.</p>
+<p>Cơ chế thứ hai, tinh tế hơn: <strong>chế độ đêm không làm FSM quên pha đang chạy</strong>. RTL viết
+<code>next_state = state;</code> khi <code>night_mode = 1</code>. Câu này trông tầm thường nhưng nó thay thế cả
+một cơ chế "lưu pha rồi khôi phục" mà phương án thêm-trạng-thái sẽ cần. Thanh ghi <code>state</code>
+tự nó <strong>là</strong> nơi lưu. Đo được: tổng 6 flip-flop, trong đó chỉ 2 cho trạng thái.</p>
+<p>Cơ chế thứ ba, và là chỗ đắt giá nhất về dạy học: <strong>lớp phủ đêm biến máy Moore thành máy
+Mealy</strong>. <code>night_mode</code> là một cổng vào, và nó xuất hiện <strong>trực tiếp</strong> trong bảng giải mã
+đầu ra. Hệ quả đo được: STA báo đường tới hạn là <code>night_mode → uo_out[1]</code> — một đường tổ
+hợp thuần từ chân vào tới chân ra, không qua flip-flop nào. Một máy Moore thuần <strong>không
+thể</strong> có đường như vậy. Đây không phải lỗi — đó là cái giá đã biết trước của việc chọn lớp
+phủ.</p>
+<p>Cơ chế thứ tư liên quan tới an toàn: tính chất "không hai xanh" <strong>không</strong> được bảo đảm bởi
+một mạch kiểm tra nào cả. Nó rơi ra từ <strong>cách mã hoá trạng thái</strong>. Bit <code>state[1]</code> chính là
+"hướng nào đang ưu tiên". Đèn xanh hướng 1 cần <code>state[1] = 0</code>; đèn xanh hướng 2 cần
+<code>state[1] = 1</code>. Cùng một dây, hai cực tính đối nhau — không cần mạch nào để bảo đảm tính
+loại trừ, nó là hệ quả của đại số Boole. Netlist xác nhận điều này ở mức cell (§7).</p>
+<h2 id="3-doc-ma-nguon-rtl-lam-gi-tung-dong-quan-trong">3. Đọc mã nguồn: RTL làm gì, từng dòng quan trọng</h2>
+<p><strong>Hàm chuyển trạng thái</strong> (<code>f01_traffic_fsm.sv:26–46</code>):</p>
+<pre><code class="language-systemverilog">always_comb begin
+    next_state = state;
+    if (night_mode) begin
+        next_state = state;        // ← ĐÓNG BĂNG pha, không phải trạng thái thứ năm
+    end else begin
+        case (state)
+            NS_GREEN: if (phase_cnt == PHASE_TICKS-1) next_state = NS_YELLOW;
+</code></pre>
+<p>Hai điều đọc được ngay: (a) gán mặc định <code>next_state = state</code> ở dòng đầu bảo đảm
+<code>always_comb</code> <strong>không</strong> suy diễn latch, dù <code>case</code> không phủ hết; (b) nhánh <code>night_mode</code>
+gán lại đúng giá trị cũ — dư thừa về logic, nhưng làm <strong>ý định</strong> hiện rõ trong mã. Yosys
+xoá phần dư này (<code>yosys.log:30</code> <em>"Removed 1 dead cases"</em>) nên không tốn cell.</p>
+<p><strong>Cập nhật bộ đếm pha</strong> (<code>:68–73</code>) — chỗ có một điểm dư thừa đáng bàn:</p>
+<pre><code class="language-systemverilog">if (state != next_state)      phase_cnt &lt;= '0;
+else if (phase_cnt == PHASE_TICKS-1) phase_cnt &lt;= '0;
+else                          phase_cnt &lt;= phase_cnt + 1'b1;
+</code></pre>
+<p>Trong nhánh không-đêm, <code>state != next_state</code> đúng <strong>khi và chỉ khi</strong> <code>phase_cnt ==
+PHASE_TICKS-1</code>. Hai nhánh đầu trùng nhau. Bản <code>_explicit</code> gộp lại thành một biểu thức ba
+ngôi (<code>:46</code>) và cho <strong>cùng</strong> kết quả tổng hợp. Vậy có nên gộp? Nên giữ ba nhánh: nếu sau
+này thêm một đường chuyển pha sớm (nút ưu tiên xe cứu hoả), nhánh 1 vẫn đúng còn cách viết
+gộp sẽ sai.</p>
+<p><strong>Bảng giải mã đầu ra với lớp phủ</strong> (<code>:78–115</code>):</p>
+<pre><code class="language-systemverilog">uo_out = '0;                     // mặc định TẮT HẾT — quan trọng cho an toàn
+if (night_mode) begin
+    if (night_phase) begin
+        uo_out[2:0] = 3'b010;    // vàng
+        uo_out[5:3] = 3'b010;
+    end
+end else begin ... end
+uo_out[7:6] = state;             // mã trạng thái, LUÔN hiện, kể cả trong đêm
+</code></pre>
+<p>Dòng <code>uo_out = '0;</code> đầu tiên là một lựa chọn an toàn tốt: trạng thái mặc định là <strong>tắt
+hết</strong>, không phải "xanh hết". Dòng cuối là nguồn gốc của một hạn chế: <code>uo_out[7:6]</code> hiện
+pha <strong>bị giữ</strong>, không có bit nào báo "đang ở chế độ đêm" (§9, S-4).</p>
+<p><strong>Netlist — chỗ đáng ngạc nhiên nhất:</strong></p>
+<pre><code class="language-verilog">sky130_fd_sc_hd__dfxtp_1 _46_ (.CLK(clk), .D(_00_), .Q(uo_out[6]));
+sky130_fd_sc_hd__dfxtp_1 _47_ (.CLK(clk), .D(_01_), .Q(uo_out[7]));
+</code></pre>
+<p>Không có net nào tên <code>state</code>. Yosys <strong>hợp nhất</strong> thanh ghi trạng thái với cổng ra, vì
+<code>uo_out[7:6] = state;</code> là phép nối dây thuần. Hệ quả kép: xuất mã trạng thái ra chân là
+<strong>0 cell</strong>, nhưng cũng chính vì thế mà pass <code>fsm</code> của Yosys <strong>không nhận ra</strong> đây là FSM
+(§8).</p>
+<h2 id="4-vi-sao-chon-kien-truc-nay">4. Vì sao chọn kiến trúc này</h2>
+<p>Bốn quyết định, mỗi quyết định có số liệu đối chứng (chi tiết ở <code>03_ARCHITECTURE/tradeoff.md</code>):</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Quyết định</th>
+<th>Phương án đã chọn</th>
+<th>Phương án thay thế</th>
+<th>Chênh lệch đo được</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chế độ đêm</td>
+<td><strong>Lớp phủ đầu ra</strong></td>
+<td>Thêm 2 trạng thái</td>
+<td>6 FF so với ≥ 9 FF; 0 mã thừa so với 2</td>
+</tr>
+<tr>
+<td>Mã hoá</td>
+<td><strong>Nhị phân tuần tự</strong></td>
+<td>One-hot</td>
+<td>2 FF so với 4 FF (40,0384 so với 80,0768 µm²)</td>
+</tr>
+<tr>
+<td>Đếm thời lượng</td>
+<td><strong>Bộ đếm nhị phân</strong></td>
+<td>Ring counter</td>
+<td>2 FF so với 4 FF, và mở rộng được</td>
+</tr>
+<tr>
+<td>Chia tần</td>
+<td><strong>Để ngoài khối</strong></td>
+<td>Đưa vào trong</td>
+<td>32 cell so với ước tính gấp 5–6 lần</td>
+</tr>
+</tbody>
+</table></div>
+<p>Cái giá của quyết định thứ nhất là tính Mealy và rủi ro glitch; cái giá của quyết định thứ
+tư là số cell đo được (32) không so trực tiếp được với ước lượng Charter (180–260).</p>
+<h2 id="5-cach-thuc-hien-lo-trinh-8-buoc-tu-dac-ta-toi-gdsii">5. Cách thực hiện — lộ trình 8 bước từ đặc tả tới GDSII</h2>
+<ol>
+<li><strong>Vẽ sơ đồ trạng thái TRƯỚC</strong> — đây là yêu cầu của Charter mục 10, không phải lời
+   khuyên. Chốt: 4 đỉnh, 8 cạnh, chế độ đêm là lớp phủ.</li>
+<li><strong>Phát biểu yêu cầu an toàn tách riêng</strong> khỏi yêu cầu chức năng, và quyết định trước sẽ
+   chứng minh nó bằng cách nào (ở đây: bằng cấu trúc mã hoá, không bằng mô phỏng).</li>
+<li><strong>Chọn mã hoá trạng thái</strong> sao cho bảng giải mã đầu ra đơn giản — ở đây, gán
+   <code>state[1]</code> = "hướng ưu tiên" làm tính chất an toàn trở thành hiển nhiên.</li>
+<li><strong>Viết mô hình chuẩn Python</strong> kiểm tính an toàn trên mọi trạng thái, trước khi viết RTL
+   (<code>reference_model.py</code> — PASS).</li>
+<li><strong>Viết RTL</strong> tách ba <code>always</code>: một <code>always_comb</code> cho next-state, một <code>always_ff</code> cho
+   mọi thanh ghi, một <code>always_comb</code> cho giải mã đầu ra.</li>
+<li><strong>Mô phỏng</strong> với testbench kiểm <strong>tính chất</strong> (assertion chạy mỗi chu kỳ), không chỉ
+   kiểm giá trị. Kết quả: <code>F01 TB PASS</code>, <code>$finish</code> tại <code>t = 256</code>.</li>
+<li><strong>Tổng hợp + STA</strong>, rồi <strong>đọc netlist bằng tay</strong> để xác nhận tính chất an toàn vẫn còn
+   sau khi <code>abc</code> tối ưu lại logic. Đây là bước hay bị bỏ và là bước quan trọng nhất của
+   một thiết kế an toàn.</li>
+<li><strong>P&amp;R, DRC, LVS, GDS</strong> — ⬜ <strong>chưa chạy</strong> trong gói này.</li>
+</ol>
+<h2 id="6-so-lieu-that-da-do-duoc-va-cach-doc-chung">6. Số liệu thật đã đo được và cách đọc chúng</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Chỉ số</th>
+<th style="text-align: right;">Giá trị</th>
+<th>Nguồn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Số cell</td>
+<td style="text-align: right;">32</td>
+<td><code>synth_stat.txt</code></td>
+</tr>
+<tr>
+<td>Flip-flop</td>
+<td style="text-align: right;">6</td>
+<td><code>synth_stat.txt</code></td>
+</tr>
+<tr>
+<td>Diện tích</td>
+<td style="text-align: right;">279,0176 µm²</td>
+<td><code>synth_stat.txt</code></td>
+</tr>
+<tr>
+<td>├ tuần tự</td>
+<td style="text-align: right;">120,1152 µm² (43,05 %)</td>
+<td>tính từ liberty × số cell</td>
+</tr>
+<tr>
+<td>└ tổ hợp</td>
+<td style="text-align: right;">158,9024 µm² (56,95 %)</td>
+<td>như trên</td>
+</tr>
+<tr>
+<td>Startpoint → Endpoint</td>
+<td style="text-align: right;"><code>night_mode</code> → <code>uo_out[1]</code></td>
+<td><code>sta/summary.txt</code></td>
+</tr>
+<tr>
+<td>Data arrival</td>
+<td style="text-align: right;">1,18 ns</td>
+<td><code>timing_report_max.txt</code></td>
+</tr>
+<tr>
+<td>Setup slack</td>
+<td style="text-align: right;">7,82 ns (MET)</td>
+<td>như trên</td>
+</tr>
+<tr>
+<td>Hold slack</td>
+<td style="text-align: right;">0,45 ns (MET)</td>
+<td><code>timing_report_min.txt</code></td>
+</tr>
+<tr>
+<td><code>t_ckq</code> của <code>dfxtp_1</code></td>
+<td style="text-align: right;">0,30 ns</td>
+<td><code>timing_report_min.txt</code></td>
+</tr>
+<tr>
+<td>WNS / TNS</td>
+<td style="text-align: right;">0,00 / 0,00</td>
+<td><code>wns.txt</code>, <code>tns.txt</code></td>
+</tr>
+<tr>
+<td>Công suất</td>
+<td style="text-align: right;">2,76e-05 W (tuần tự 92,8 %, tổ hợp 7,2 %)</td>
+<td><code>power_report.txt</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Những gì các số này CHỨNG MINH:</strong>
+- RTL tổng hợp được ra standard cell sky130 thật.
+- Số flip-thanh-ghi-trạng-thái đúng bằng ⌈log₂4⌉ = 2 — Yosys <strong>không</strong> đổi sang one-hot.
+- Phân loại "Tuần tự" đúng: 6 ô nhớ đồng bộ.
+- Với chu kỳ giả định 10 ns, không có vi phạm setup lẫn hold sau tổng hợp.
+- Đường tới hạn <strong>không</strong> đi qua thanh ghi trạng thái — trả lời trực tiếp Charter mục 2
+  câu 3.</p>
+<p><strong>Những gì các số này KHÔNG chứng minh:</strong>
+- <strong>Không</strong> chứng minh netlist tương đương RTL đã mô phỏng — vì <strong>module được tổng hợp
+  (<code>_explicit</code>) chưa từng được mô phỏng</strong>, và <strong>tham số cũng khác</strong> (<code>PHASE_TICKS</code> 4 so
+  với 2). Đây là lỗ hổng chuỗi bằng chứng lớn nhất của gói này.
+- <strong>Không</strong> chứng minh mạch chạy ở 100 MHz. 10 ns là giả định SDC; chưa có RC; một góc PVT.
+- <strong>Không</strong> chứng minh không có glitch "hai xanh" thoáng qua khi <code>night_mode</code> lật — mô
+  phỏng zero-delay không sinh glitch.
+- <strong>Không</strong> chứng minh đèn sáng <strong>đúng màu</strong>: testbench chỉ kiểm <code>both_green</code>, không kiểm
+  giá trị <code>uo_out</code> đầy đủ. Một RTL đổi chỗ vàng và đỏ vẫn PASS toàn bộ testbench hiện tại.
+- Biên hold 0,45 ns <strong>chưa</strong> trừ clock skew thật (CTS ⬜ chưa chạy).</p>
+<h2 id="7-tra-loi-cac-cau-hoi-ky-thuat-cua-charter-muc-2">7. Trả lời các câu hỏi kỹ thuật của Charter (mục 2)</h2>
+<p><strong>Câu 1 — "Bằng chứng nào chứng minh KHÔNG BAO GIỜ có hai hướng cùng xanh?"</strong></p>
+<p>Bằng chứng là <strong>cấu trúc netlist</strong>, không phải mô phỏng. Ba dòng trong
+<code>06_GDSII/synthesis/netlist.v</code>:</p>
+<pre><code class="language-verilog">sky130_fd_sc_hd__clkinv_1 _21_ (.A(uo_out[7]), .Y(_07_));
+sky130_fd_sc_hd__nor3_1 _41_ (.A(uo_out[7]), .B(uo_out[6]), .C(night_mode), .Y(uo_out[0]));
+sky130_fd_sc_hd__nor3_1 _44_ (.A(_07_),      .B(uo_out[6]), .C(night_mode), .Y(uo_out[3]));
+</code></pre>
+<p><code>nor3</code> cho <code>Y = !A &amp; !B &amp; !C</code>. Vậy <code>uo_out[0] = ¬s1·¬s0·¬night</code> và
+<code>uo_out[3] = s1·¬s0·¬night</code>. Tích của chúng chứa <code>¬s1·s1 = 0</code> với <strong>mọi</strong> giá trị của mọi
+tín hiệu. Hai cell được lái bởi <strong>cùng một dây</strong> <code>uo_out[7]</code>, một cell qua bộ đảo <code>_21_</code>,
+cell kia không. Đây là chứng minh đại số, vét cạn, độc lập với số ca mô phỏng — đúng mức
+chặt chẽ mà một yêu cầu an toàn đòi hỏi. Kết quả mô phỏng (<code>f01_tb.sv:24, 32, 40, 47</code>) là
+bằng chứng <strong>bổ trợ</strong>, không phải bằng chứng chính.</p>
+<p><strong>Câu 2 — "Số ô nhớ dự đoán theo ⌈log₂(số trạng thái)⌉ là bao nhiêu, và netlist có khớp?"</strong></p>
+<p>Xem §8.</p>
+<p><strong>Câu 3 — "Đường tới hạn của FSM đi từ đâu tới đâu — qua thanh ghi trạng thái hay qua
+logic đầu ra?"</strong></p>
+<p><strong>Qua logic đầu ra, và thậm chí không chạm thanh ghi nào.</strong> <code>sta/summary.txt</code>:
+<code>night_mode (input) → uo_out[1] (output)</code>, slack 7,82 ns, đúng <strong>một</strong> cell trên đường
+(<code>_42_</code>, <code>a22o_1</code>, 0,18 ns). Sáu trong mười đường xấu nhất đều là in→out. Đường qua logic
+next-state của FSM (<code>ena → _24_ → _27_ → _29_ → _47_/D</code>, 3 cell, arrival 1,49 ns) chỉ xếp
+hạng 7 với slack 8,43 ns.</p>
+<p>Nhưng phải nói thêm một tầng: <strong>kết quả này do ràng buộc SDC quyết định, không do mạch.</strong>
+<code>design.sdc</code> đặt <code>input_delay = output_delay = 1,0 ns</code>. Đường ra vì thế có <code>required time</code>
+9,00 ns, còn đường tới flip-flop được tới 9,92 ns — chênh 0,92 ns. Đổi hai con số giả định
+đó thì thứ hạng đường tới hạn sẽ đổi, mà không sửa một dòng RTL nào.</p>
+<h2 id="8-tra-loi-cau-phan-tich-rieng-charter-muc-9">8. Trả lời câu phân tích riêng (Charter mục 9)</h2>
+<blockquote>
+<p><em>"Vẽ sơ đồ trạng thái và đối chiếu số flip-flop trong báo cáo với số bit tối thiểu cần
+để mã hoá số trạng thái của mình. Nếu công cụ dùng nhiều hơn, tìm hiểu về mã hoá one-hot
+và nêu vì sao công cụ chọn cách đó."</em></p>
+</blockquote>
+<p><strong>Số học trước:</strong> 4 trạng thái ⇒ ⌈log₂4⌉ = <strong>2 bit tối thiểu</strong>.</p>
+<p><strong>Netlist thật:</strong> 6 × <code>dfxtp_1</code>. Truy vết từng cell trong <code>netlist.v</code> theo chân <code>Q</code>:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Cell</th>
+<th><code>Q</code> nối tới</th>
+<th>Thuộc về</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_46_</code></td>
+<td><code>uo_out[6]</code></td>
+<td><strong><code>state[0]</code></strong></td>
+</tr>
+<tr>
+<td><code>_47_</code></td>
+<td><code>uo_out[7]</code></td>
+<td><strong><code>state[1]</code></strong></td>
+</tr>
+<tr>
+<td><code>_49_</code>, <code>_50_</code></td>
+<td><code>pc[0]</code>, <code>pc[1]</code></td>
+<td>bộ đếm pha</td>
+</tr>
+<tr>
+<td><code>_51_</code></td>
+<td><code>nc</code></td>
+<td>bộ đếm nhấp nháy</td>
+</tr>
+<tr>
+<td><code>_48_</code></td>
+<td><code>night_phase</code></td>
+<td>bit pha nhấp nháy</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Kết luận: đúng 2 flip-thanh-ghi cho trạng thái — khớp chính xác ⌈log₂4⌉. Công cụ KHÔNG
+dùng nhiều hơn, KHÔNG đổi sang one-hot.</strong> Bốn flip-flop còn lại không phải trạng thái FSM
+mà là datapath đếm thời gian và bit pha nhấp nháy.</p>
+<p><strong>Nhưng lý do Yosys giữ nhị phân không phải lý do người ta hay đoán.</strong> <code>synth.ys</code> có chạy
+pass <code>fsm</code>, và <code>yosys.log:187–205</code> cho thấy đủ chuỗi <code>FSM_DETECT → FSM_EXTRACT →
+FSM_RECODE → FSM_MAP</code>. Tuy nhiên <strong>không một dòng nào báo tìm thấy FSM</strong> — <code>FSM_DETECT</code> in
+ra rỗng.</p>
+<p>Nguyên nhân đọc được từ netlist: thanh ghi <code>state</code> được <strong>nối thẳng ra cổng ra</strong>
+(<code>uo_out[7:6] = state;</code>). <code>fsm_detect</code> của Yosys chỉ nhận một thanh ghi là ứng viên FSM
+khi thanh ghi đó chỉ tham gia các phép <strong>so sánh bằng</strong>. Ở đây <code>state</code> còn được dùng làm
+<strong>giá trị</strong> đi ra chân, nên nó bị loại.</p>
+<blockquote>
+<p>🎓 <strong>Đây là bài học đáng giá nhất của Charter mục 9 cho đề này:</strong> <em>một yêu cầu ở tầng
+đặc tả (Charter mục 4 bắt xuất mã trạng thái ra <code>uo_out[7:6]</code>) đã vô hiệu hoá một pass
+tối ưu của công cụ tổng hợp.</em> Kết quả tình cờ là tốt — nhị phân vẫn là lựa chọn đúng cho
+4 trạng thái. Nhưng trả lời Charter mục 9 bằng câu <em>"công cụ chọn nhị phân vì nhị phân
+tốt hơn"</em> là <strong>sai bản chất</strong>: công cụ không chọn gì cả, nó không nhìn thấy FSM.</p>
+</blockquote>
+<p><strong>Nếu one-hot được dùng thì sao?</strong> 4 FF thay vì 2 (80,0768 thay vì 40,0384 µm²), 12/16 mã
+thừa phải xử lý, và cần thêm bộ mã hoá 4→2 để xuất <code>uo_out[7:6]</code>. Đổi lại, logic
+next-state đơn giản hơn và đường tới hạn ngắn hơn. Nhưng đường tới hạn của F01 <strong>vốn đã
+chỉ 1 cell</strong>, nên one-hot ở đây chỉ tốn thêm, không lợi gì.</p>
+<h2 id="9-nhung-cho-sinh-vien-hay-sai-va-cach-phat-hien">9. Những chỗ sinh viên hay sai và cách phát hiện</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Sai lầm</th>
+<th>Hậu quả</th>
+<th>Phát hiện bằng bằng chứng nào</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-1</td>
+<td><strong>Khẳng định F01 là máy Moore</strong></td>
+<td>Sai phân loại; bỏ sót rủi ro glitch trên đèn</td>
+<td><code>sta/summary.txt</code> ghi đường <code>night_mode (input) → uo_out[1] (output)</code> — đường tổ hợp in→out. Máy Moore thuần không thể có đường này. Bắt sinh viên chỉ ra flip-flop nằm trên đường đó — không có</td>
+</tr>
+<tr>
+<td>S-2</td>
+<td><strong>Chứng minh an toàn bằng mô phỏng</strong> ("chạy 26 chu kỳ, không lần nào hai xanh")</td>
+<td>Chứng minh yếu; không phải chứng minh "không bao giờ"</td>
+<td>Hỏi: <em>"nếu chạy 27 chu kỳ thì sao? 10⁶ chu kỳ?"</em> Bằng chứng đúng là cấu trúc <code>_41_</code>/<code>_44_</code> chia nhau <code>uo_out[7]</code> (§7)</td>
+</tr>
+<tr>
+<td>S-3</td>
+<td><strong>Vẽ sơ đồ 6 trạng thái</strong> (thêm 2 trạng thái đêm) rồi báo cáo như thể đó là thiết kế</td>
+<td>Sơ đồ không khớp mã và không khớp netlist</td>
+<td>Netlist có <strong>2</strong> FF trạng thái, không phải 3. 6 trạng thái cần ⌈log₂6⌉ = 3 bit</td>
+</tr>
+<tr>
+<td>S-4</td>
+<td><strong>Tin <code>uo_out[7:6]</code> báo chế độ đêm</strong></td>
+<td>Đọc sai trạng thái hệ thống ngoài hiện trường</td>
+<td>Đọc RTL <code>:114</code>: <code>uo_out[7:6] = state;</code> nằm <strong>ngoài</strong> mọi nhánh <code>if (night_mode)</code>. Giản đồ <code>timing_diagram.md</code> §2 chu kỳ 13–18 cho thấy mã vẫn là <code>10</code> (<code>EW_GREEN</code>) khi đèn đang nháy vàng</td>
+</tr>
+<tr>
+<td>S-5</td>
+<td><strong>Báo cáo "32 cell, nhỏ hơn Charter ước lượng 180–260, vậy thiết kế tối ưu"</strong></td>
+<td>Kết luận sai. Chênh lệch đến từ <strong>dịch chuyển ranh giới khối</strong>, không từ tối ưu</td>
+<td><code>PHASE_TICKS = 4</code> ⇒ <code>pc</code> chỉ 2 bit. Charter dự đoán bộ đếm ~8 bit. Bộ chia tần nằm <strong>ngoài</strong> khối (<code>system_diagram.md</code> §1)</td>
+</tr>
+<tr>
+<td>S-6</td>
+<td><strong>Mô phỏng một module, tổng hợp module khác</strong> rồi coi như đã kiểm chứng xong</td>
+<td>Chuỗi bằng chứng đứt</td>
+<td><code>f01_tb.sv:5</code> khởi tạo <code>f01_traffic_fsm</code>; <code>synth_stat.txt</code> ghi top là <code>f01_traffic_fsm_explicit</code>; <code>yosys.log:21</code> ghi <em>"Removing unused module <code>\f01_traffic_fsm</code>"</em>. Hai module, hai tham số khác nhau</td>
+</tr>
+<tr>
+<td>S-7</td>
+<td><strong>Kiểm chỉ tính an toàn, quên kiểm đúng màu đèn</strong></td>
+<td>Một RTL bật sai màu vẫn PASS</td>
+<td>Đọc <code>f01_tb.sv</code>: không có dòng nào so <code>uo_out</code> với hằng số. Yêu cầu sinh viên cố tình đổi <code>3'b001</code> thành <code>3'b100</code> ở <code>:91</code> và chạy lại — testbench vẫn PASS</td>
+</tr>
+<tr>
+<td>S-8</td>
+<td><strong>Xoá nhánh <code>default</code></strong> vì "Yosys báo nó chết"</td>
+<td><code>always_comb</code> có thể suy diễn latch</td>
+<td><code>yosys.log:70–71</code> ghi <em>"No latch inferred"</em> — đó là <strong>nhờ</strong> có <code>default</code>. Xoá đi thì rủi ro quay lại</td>
+</tr>
+<tr>
+<td>S-9</td>
+<td><strong>Kết luận "FSM chạy được ở 100 MHz"</strong> từ slack 7,82 ns</td>
+<td>Phát biểu vượt mức</td>
+<td><code>design.sdc</code>: 10 ns là <strong>giả định</strong>; <code>timing.md</code> giả định G-4 ghi chưa có RC. Và với đèn giao thông, tần số thật thấp hơn hàng nghìn lần — timing không phải vấn đề của đề này</td>
+</tr>
+<tr>
+<td>S-10</td>
+<td><strong>Quên rằng chuyển <code>01 → 10</code> làm hai bit đổi cùng lúc</strong> trên chân ra</td>
+<td>Tầng ngoài lấy mẫu bất đồng bộ có thể đọc <code>00</code> hoặc <code>11</code> thoáng qua</td>
+<td><code>fsm.md</code> §1: mã nhị phân tuần tự; cạnh <code>NS_YELLOW → EW_GREEN</code> đổi cả hai bit. Mã Gray sẽ tránh được, chi phí 0 FF</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="10-cau-hoi-mentor-nen-dat-khi-bao-ve">10. Câu hỏi mentor nên đặt khi bảo vệ</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Câu hỏi</th>
+<th>Đáp án mong đợi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1</td>
+<td>FSM của em là Mealy hay Moore? Chứng minh bằng một con số trong báo cáo.</td>
+<td><strong>Mealy.</strong> <code>sta/summary.txt</code>: đường <code>night_mode (input) → uo_out[1] (output)</code>, tổ hợp thuần, 0 flip-flop. Riêng <code>uo_out[7:6]</code> là Moore.</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Chứng minh "không bao giờ hai hướng cùng xanh" <strong>mà không dùng kết quả mô phỏng</strong>.</td>
+<td>Netlist: <code>_41_</code> lấy <code>uo_out[7]</code>, <code>_44_</code> lấy <code>~uo_out[7]</code> (qua <code>_21_</code>). Tích hai đầu ra chứa <code>s1·¬s1 = 0</code>. Vét cạn.</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>Netlist có 6 flip-flop. Chỉ đúng cái nào là trạng thái FSM.</td>
+<td><code>_46_</code> (<code>Q = uo_out[6]</code> = <code>state[0]</code>) và <code>_47_</code> (<code>Q = uo_out[7]</code> = <code>state[1]</code>). Bốn cái còn lại là <code>pc[1:0]</code>, <code>nc</code>, <code>night_phase</code> — datapath, không phải trạng thái.</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>Yosys có đổi mã hoá trạng thái không? Vì sao?</td>
+<td><strong>Không.</strong> <code>yosys.log:187–205</code>: <code>FSM_DETECT</code> in ra rỗng. Vì <code>state</code> được nối thẳng ra <code>uo_out[7:6]</code> nên không được nhận là ứng viên FSM. Không phải vì Yosys "chọn" nhị phân.</td>
+</tr>
+<tr>
+<td>Q5</td>
+<td>Chế độ đêm là trạng thái hay lớp phủ? Nếu làm cách kia thì tốn thêm bao nhiêu?</td>
+<td><strong>Lớp phủ.</strong> Cách kia (6 trạng thái) cần ≥ 9 FF thay vì 6, sinh 2 mã thừa, và phải thêm logic lưu/khôi phục pha.</td>
+</tr>
+<tr>
+<td>Q6</td>
+<td>Khi <code>night_mode = 1</code>, <code>uo_out[7:6]</code> hiện gì?</td>
+<td>Hiện <strong>pha bị giữ</strong> (ví dụ <code>10</code> = <code>EW_GREEN</code>), <strong>không</strong> hiện "đang đêm". Không có bit nào báo chế độ đêm — đây là hạn chế đã ghi nhận.</td>
+</tr>
+<tr>
+<td>Q7</td>
+<td>Testbench của em đã kiểm đèn sáng <strong>đúng màu</strong> chưa?</td>
+<td><strong>Chưa.</strong> Chỉ kiểm <code>both_green</code>. Cần bổ sung so <code>uo_out</code> với hằng số <code>0x21 / 0x62 / 0x8C / 0xD4</code>.</td>
+</tr>
+<tr>
+<td>Q8</td>
+<td>Module nào được mô phỏng, module nào được tổng hợp?</td>
+<td>Mô phỏng <code>f01_traffic_fsm</code> với <code>PHASE_TICKS=2</code>; tổng hợp <code>f01_traffic_fsm_explicit</code> với <code>PHASE_TICKS=4</code>. <strong>Chuỗi bằng chứng bị đứt</strong>, cần chạy lại testbench trên đúng cấu hình được tổng hợp.</td>
+</tr>
+<tr>
+<td>Q9</td>
+<td>Vì sao đường tới hạn không đi qua thanh ghi trạng thái?</td>
+<td>Vì SDC đặt <code>output_delay = 1,0 ns</code> ⇒ <code>required time</code> của cổng ra chỉ 9,00 ns, trong khi endpoint flip-flop được 9,92 ns. Chênh 0,92 ns đủ để đường ra thắng, dù nó chỉ qua 1 cell còn đường FSM qua 3 cell.</td>
+</tr>
+<tr>
+<td>Q10</td>
+<td>Nếu một flip-flop trạng thái bị lật do nhiễu, mạch có an toàn không?</td>
+<td>INV-1 <strong>vẫn</strong> thoả (chứng minh ở Q2 đúng với mọi giá trị <code>state</code>). Nhưng INV-5 <strong>có thể vi phạm</strong>: lật <code>state[1]</code> đưa <code>NS_GREEN → EW_GREEN</code> trực tiếp, không qua vàng. Đây là rủi ro an toàn chưa được xử lý.</td>
+</tr>
+<tr>
+<td>Q11</td>
+<td>Ngã tư thật có pha all-red giữa các pha. F01 thì không. Có sao không?</td>
+<td>Có. F01 chuyển thẳng <code>NS_YELLOW → EW_GREEN</code>. Thêm all-red cần +2 trạng thái ⇒ 3 bit mã hoá ⇒ +1 FF và xuất hiện mã thừa. Nằm ngoài yêu cầu đề nhưng đáng nêu ở phần giới hạn.</td>
+</tr>
+<tr>
+<td>Q12</td>
+<td>Diện tích tuần tự 43,05 % nhưng công suất tuần tự 92,8 %. Mâu thuẫn?</td>
+<td>Không. Flip-flop tiêu công suất nội tại ở <strong>mọi</strong> cạnh clock, còn logic tổ hợp của F01 chuyển trạng thái rất thưa (mỗi <code>PHASE_TICKS</code> chu kỳ mới đổi pha một lần).</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="11-gioi-han-da-chung-minh-duoc-gi-chua-chung-minh-duoc-gi">11. Giới hạn: đã chứng minh được gì, chưa chứng minh được gì</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Khẳng định</th>
+<th style="text-align: center;">Trạng thái</th>
+<th>Bằng chứng / lý do thiếu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTL tổng hợp được ra sky130 standard cell</td>
+<td style="text-align: center;">✅</td>
+<td><code>yosys.log</code>, <code>synth_stat.txt</code></td>
+</tr>
+<tr>
+<td>Số FF trạng thái = ⌈log₂4⌉ = 2</td>
+<td style="text-align: center;">✅</td>
+<td><code>netlist.v</code>, truy vết chân <code>Q</code></td>
+</tr>
+<tr>
+<td><strong>Không bao giờ hai hướng cùng xanh (INV-1)</strong> ở trạng thái ổn định</td>
+<td style="text-align: center;">✅ <strong>chứng minh cấu trúc</strong></td>
+<td><code>netlist.v</code>, cell <code>_21_</code>/<code>_41_</code>/<code>_44_</code></td>
+</tr>
+<tr>
+<td>INV-1 đúng <strong>trong vùng quá độ</strong> khi <code>night_mode</code> lật</td>
+<td style="text-align: center;">❌ chưa</td>
+<td>Cần mô phỏng L5 + SDF. Mô phỏng zero-delay không sinh glitch</td>
+</tr>
+<tr>
+<td>Phủ đủ 4 trạng thái và 8 cạnh của đồ thị</td>
+<td style="text-align: center;">✅</td>
+<td><code>f01_tb.sv:22–27</code>, truy vết chu kỳ ở <code>corner_cases.md</code> §3</td>
+</tr>
+<tr>
+<td>Đèn sáng <strong>đúng màu</strong> ở từng pha</td>
+<td style="text-align: center;">❌ chưa</td>
+<td>Testbench chỉ kiểm <code>both_green</code>, không so giá trị <code>uo_out</code></td>
+</tr>
+<tr>
+<td>Thời lượng mỗi pha đúng <code>PHASE_TICKS</code></td>
+<td style="text-align: center;">❌ chưa</td>
+<td>Không có ca đếm chu kỳ trong testbench</td>
+</tr>
+<tr>
+<td>INV-5 (luôn qua vàng trước khi đổi hướng)</td>
+<td style="text-align: center;">❌ chưa</td>
+<td>Chưa có assertion thời gian</td>
+</tr>
+<tr>
+<td>Netlist tương đương RTL đã mô phỏng</td>
+<td style="text-align: center;">❌ chưa</td>
+<td><strong>Module và tham số khác nhau</strong> (W-2, W-3). Chưa chạy L4-GATE, chưa chạy kiểm tương đương hình thức</td>
+</tr>
+<tr>
+<td>Không vi phạm setup/hold sau tổng hợp, chu kỳ 10 ns</td>
+<td style="text-align: center;">✅</td>
+<td>WNS 0,00 / TNS 0,00; hold slack 0,45 ns</td>
+</tr>
+<tr>
+<td>Không vi phạm timing <strong>sau P&amp;R</strong></td>
+<td style="text-align: center;">❌ chưa</td>
+<td>Floorplan/CTS/Routing ⬜ chưa chạy. Net <code>night_mode</code> fanout 9 là chỗ rủi ro nhất</td>
+</tr>
+<tr>
+<td>Tần số hoạt động tối đa</td>
+<td style="text-align: center;">❌ chưa</td>
+<td>Cần STA post-route nhiều góc PVT</td>
+</tr>
+<tr>
+<td>Mạch qua được DRC/LVS</td>
+<td style="text-align: center;">⬛ không áp dụng</td>
+<td>Charter mục 3</td>
+</tr>
+<tr>
+<td>Chip đã chế tạo, đã đo</td>
+<td style="text-align: center;">⬛ không áp dụng</td>
+<td>Charter mục 3</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<p><em>Phiên bản: v1.0 · Ngày: 2026-09-24</em></p>
+</main>
+<footer class="doc">
+  Tài liệu sinh từ <code>implementation-notes_F01.md</code>.
+  Mọi số liệu đều kèm công cụ, phiên bản và lệnh tái lập trong
+  <code>07_TRACEABILITY/evidence_index.md</code>.
+</footer>
+</div>
+<script>
+(function(){
+  var b=document.createElement('button');
+  b.className='themebtn'; b.type='button';
+  function lbl(){var t=document.documentElement.getAttribute('data-theme');
+    return t==='dark'?'Nen sang':(t==='light'?'Nen toi':'Doi nen');}
+  b.textContent=lbl();
+  try{var s=localStorage.getItem('rtl2gds-theme'); if(s)document.documentElement.setAttribute('data-theme',s);}catch(e){}
+  b.textContent=lbl();
+  b.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var mq=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=cur?(cur==='dark'?'light':'dark'):(mq?'light':'dark');
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('rtl2gds-theme',next);}catch(e){}
+    b.textContent=lbl();
+  });
+  document.body.appendChild(b);
+})();
+</script>
+</body>
+</html>

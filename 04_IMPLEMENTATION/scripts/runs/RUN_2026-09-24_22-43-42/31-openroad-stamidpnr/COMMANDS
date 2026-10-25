@@ -1,0 +1,1 @@
+openroad -exit -no_splash -metrics /home/lucero/projects/RTL2GDS_UNIFIED_80_v2.0/F01_FSM_den_giao_thong_hai_chieu_co_den_vang/04_IMPLEMENTATION/scripts/runs/RUN_2026-09-24_22-43-42/31-openroad-stamidpnr/or_metrics_out.json /nix/store/c0jbyg8dmh24m6fbdpjcx1fppc22an05-python3-3.13.9-env/lib/python3.13/site-packages/librelane/scripts/openroad/sta/corner.tcl

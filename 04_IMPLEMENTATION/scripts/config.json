@@ -1,0 +1,38 @@
+{
+  "project_id": "F01",
+  "title": "FSM đèn giao thông hai chiều có đèn vàng",
+  "group": "F · Máy trạng thái hữu hạn (FSM)",
+  "difficulty": "Trung bình (nhẹ)",
+  "circuit_type": "Tuần tự",
+  "charter_scale": "~180–260 cell · 1×1 tile",
+  "top_module": "f01_traffic_fsm_explicit",
+  "clock_port": "clk",
+  "has_clock": true,
+  "expected_ff_zero": false,
+  "technology": "sky130A",
+  "std_cell_library": "sky130_fd_sc_hd",
+  "liberty_corner": "tt_025C_1v80",
+  "flow": "LibreLane/OpenROAD",
+  "measured": {
+    "sim": "PASS",
+    "pyref": "PASS",
+    "synth": "PASS",
+    "sta": "PASS",
+    "cells": 32,
+    "flip_flops": 6,
+    "area_um2": 279.0176,
+    "critical_path_ns": 1.18,
+    "startpoint": "night_mode",
+    "endpoint": "uo_out[1]",
+    "power_total_w": "2.76e-05"
+  },
+  "not_run": [
+    "floorplan",
+    "placement",
+    "routing",
+    "drc",
+    "lvs",
+    "gds"
+  ],
+  "source_dir_origin": "F01_FINAL_MENTOR_PACKAGE_v1_0"
+}
