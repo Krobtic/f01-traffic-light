@@ -27,9 +27,9 @@ jobs:
           iverilog -V | head -1 | tee tool_versions.txt
           echo "Ngay chay: $(date -Is)" | tee -a tool_versions.txt
 
-      - name: Bien dich va chay testbench
+- name: Bien dich va chay testbench
         run: |
-          iverilog -g2012 -o sim.vvp src/*.v 05_VERIFICATION/testbench/*.sv
+          iverilog -g2012 -o sim.vvp src/*.v src/*.sv 05_VERIFICATION/testbench/*.sv
           vvp sim.vvp | tee simulation.log
 
       - name: Kiem log - phai co PASS va khong duoc co loi

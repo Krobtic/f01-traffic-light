@@ -2,7 +2,8 @@
   "DESIGN_NAME": "tt_um_f01_traffic_light",
   "VERILOG_FILES": [
     "dir::tt_um_f01_traffic_light.v",
-    "dir::fsm_traffic_light.v"
+    "dir::f01_traffic_fsm_explicit.sv",
+    "dir::f01_traffic_fsm.sv"
   ],
   "CLOCK_PORT": "clk",
   "CLOCK_NET": "clk",
